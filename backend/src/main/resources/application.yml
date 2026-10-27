@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: unity-skill
+  jackson:
+    time-zone: UTC
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+app:
+  storage:
+    limit-bytes: ${STORAGE_LIMIT_BYTES:524288000}  # 500 MB default
+  cors:
+    allowed-origins: http://localhost:3000
+  security:
+    cookie-secure: true
+  frontend-url: http://localhost:3000
+  mail:
+    from: ${MAIL_FROM:noreply@unityskill.app}
+    from-name: ${MAIL_FROM_NAME:unity_skill}
+  invitation-expiry-days: 7
+
+server:
+  port: 8080
+  shutdown: graceful
+
+logging:
+  level:
+    com.unityskill: DEBUG
+    org.flywaydb: INFO

@@ -1,0 +1,91 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/unityskill_dev?options=-c%20TimeZone%3DUTC
+    username: ${SPRING_DATASOURCE_USERNAME:unityskill}
+    password: ${SPRING_DATASOURCE_PASSWORD:unityskill_dev_password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+  flyway:
+    enabled: true
+  security:
+    user:
+      name: ignored
+      password: ignored
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-key-placeholder-minimum-256-bits-long}
+  access-token-expiry-ms: ${JWT_ACCESS_TOKEN_EXPIRY_MS}
+  refresh-token-expiry-days: ${JWT_REFRESH_TOKEN_EXPIRY_DAYS}
+
+app:
+  mail:
+    from: ${MAIL_FROM}
+    from-name: ${MAIL_FROM_NAME:unity_skill}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.flywaydb: DEBUG
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/api/v1/auth/google/login/callback}
+  frontend-redirect-base-url: ${GOOGLE_FRONTEND_REDIRECT_BASE_URL:http://localhost:3000}
+
+github:
+  # Project-connect OAuth App (callback: /api/v1/auth/github/callback)
+  client-id: ${GITHUB_CLIENT_ID}
+  client-secret: ${GITHUB_CLIENT_SECRET}
+  redirect-uri: ${GITHUB_REDIRECT_URI}
+  # Login OAuth App (separate app — callback: /api/v1/auth/github/login/callback)
+  login-client-id: ${GITHUB_LOGIN_CLIENT_ID}
+  login-client-secret: ${GITHUB_LOGIN_CLIENT_SECRET}
+  login-redirect-uri: ${GITHUB_LOGIN_REDIRECT_URI:http://localhost:8080/api/v1/auth/github/login/callback}
+  webhook-endpoint-url: ${GITHUB_WEBHOOK_ENDPOINT_URL}
+  frontend-redirect-base-url: ${GITHUB_FRONTEND_REDIRECT_BASE_URL:http://localhost:3000}
+
+auth:
+  cookie-secure: ${AUTH_COOKIE_SECURE:false}
+
+encryption:
+  secret: ${ENCRYPTION_SECRET}
+  salt: ${ENCRYPTION_SALT}
+
+# Asia/Saigon not recognized by PostgreSQL 16, UTC forced via JDBC connection param
+
+ai:
+  # Provider options:
+  #   groq      — FREE 14 400 req/day, 30 req/min — get key at https://console.groq.com  ← recommended
+  #   gemini    — FREE 1 500 req/day, 15 req/min  — get key at https://aistudio.google.com/apikey
+  #   anthropic — PAID                            — get key at https://console.anthropic.com
+  provider: ${AI_PROVIDER:groq}
+  groq:
+    api-key: ${GROQ_API_KEY:}
+    model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.0-flash}
+  anthropic:
+    api-key: ${ANTHROPIC_API_KEY:}
+    model: ${ANTHROPIC_MODEL:claude-haiku-4-5-20251001}
